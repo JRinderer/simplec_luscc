@@ -1,0 +1,21 @@
+Step 1. create a token.h file that has the struct for token and the enum for the token type.
+Step 2. The token struct should have one char pointer called tok and a value called value.
+Step 3. The main.c file should open a file called scannernotes.txt and pass the file pointer to the scanner function
+called start_scanner in the scanner.c file.
+Step 4. The scanner.c file should have a scanner.h file as well to expose it's functionality.
+Step 5. Create a vars.h file that has the an array for the followin:
+    Step 5a. Create an array for reserved keywords like int, char, void, etc.
+    Step 5b. Create an array for the operators like +, -, *, /, etc.
+    Step 5c. Create an array for the delimiters like ;, {, }, etc.
+    Step 5d. Create an array for the whitespace characters like space, newline, etc.
+    Step 5e. Create an array for the string characters like ".
+Step 6.  The start_scanner function should read the file character by character and create token based on the following:
+    Step 6a. If the character is a ", it indicates the start of a string. It should call a function called scan_string
+    that will read the string until it finds another ". It should then return a token with the string value and the
+    token type of STRING.
+    Step 6b. If the character is a letter, it indicates the start of a keyword or identifier. It should call a function
+    called scan_keyword_or_identifier that will read the keyword or identifier until it finds a space,newline, or a ;.
+    Step 6c. If the character is a digit, it indicates the start of a number. It should call a function called scan_number.
+    Step 6d. If the character is a whitespace, it should skip it unless that white space is inside a string, in that case,
+    It should just continue reading.
+    Step 6e. If the character is an operator, it should return a token with the operator value and the token type of OPERATOR.
