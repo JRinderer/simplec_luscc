@@ -39,6 +39,7 @@ void scan_string(FILE *file, Token *token) {
 
     token->tok = buffer;
     token->type = TOKEN_TYPE_STRING;
+    token->value = strdup(buffer);
 }
 
 void scan_keyword_or_identifier(FILE *file, Token *token) {
@@ -81,6 +82,7 @@ void scan_keyword_or_identifier(FILE *file, Token *token) {
     }
 
     token->tok = buffer;
+    token->value = strdup(buffer);
 }
 
 void scan_number(FILE *file, Token *token) {
@@ -115,7 +117,9 @@ void scan_number(FILE *file, Token *token) {
 
     token->tok = buffer;
     token->type = TOKEN_TYPE_NUMBER;
-    token->value = atoi(buffer);
+    char str[12]; // Assuming the integer won't be larger than 11 digits
+    sprintf(str, "%d", atoi(buffer));
+    token->value = strdup(str);
 }
 
 void scan_operator_or_delimiter(FILE *file, Token *token) {
@@ -128,6 +132,7 @@ void scan_operator_or_delimiter(FILE *file, Token *token) {
 
     char buffer[2] = {ch, '\0'};
     token->tok = strdup(buffer);
+    token->value = strdup(buffer);
 
     // Check if the character is an operator
     token->type = TOKEN_TYPE_OPERATOR;
@@ -155,20 +160,24 @@ void start_scanner(FILE *file) {
     while ((ch = fgetc(file)) != EOF) {
         current_position++;if (ch == '"') {
             scan_string(file, &token);
-            printf("Token: %s, Type: STRING\n", token.tok);
+           printf("Token: %s, Type: STRING\n", token.tok);
+            printf("Token: %s, Value: %s\n", token.tok, token.value);
         } else if (isalpha(ch)) {
             scan_keyword_or_identifier(file, &token);
             printf("Token: %s, Type: %s\n", token.tok, token.type == TOKEN_TYPE_KEYWORD ? "KEYWORD" : "IDENTIFIER");
+            printf("Token: %s, Value: %s\n", token.tok, token.value);
         } else if (isdigit(ch)) {
             scan_number(file, &token);
             printf("Token: %s, Type: NUMBER, Value: %d\n", token.tok, token.value);
+            printf("Token: %s, Value: %s\n", token.tok, token.value);
         } else if (isspace(ch)) {
             continue;
         } else {
             scan_operator_or_delimiter(file, &token);
             printf("Token: %s, Type: %s\n", token.tok,
-                   token.type == TOKEN_TYPE_OPERATOR ? "OPERATOR" :
-                   token.type == TOKEN_TYPE_DELIMITER ? "DELIMITER" : "UNKNOWN");
+                  token.type == TOKEN_TYPE_OPERATOR ? "OPERATOR" :
+                  token.type == TOKEN_TYPE_DELIMITER ? "DELIMITER" : "UNKNOWN");
+            printf("Token: %s, Value: %s\n", token.tok, token.value);
         }
     }
 }

@@ -19,3 +19,4 @@ Step 6.  The start_scanner function should read the file character by character 
     Step 6d. If the character is a whitespace, it should skip it unless that white space is inside a string, in that case,
     It should just continue reading.
     Step 6e. If the character is an operator, it should return a token with the operator value and the token type of OPERATOR.
+
